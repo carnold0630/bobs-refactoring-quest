@@ -177,6 +177,11 @@ class AdventureGame {
             const isScrollable = this.storyTextElement.scrollHeight > this.storyTextElement.clientHeight;
             if (isScrollable) {
                 this.storyTextElement.classList.add('has-scroll');
+                
+                // Auto-hide indicator after 3 seconds on mobile
+                setTimeout(() => {
+                    this.storyTextElement.classList.remove('has-scroll');
+                }, 3000);
             } else {
                 this.storyTextElement.classList.remove('has-scroll');
             }
