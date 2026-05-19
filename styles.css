@@ -129,9 +129,9 @@ header h1 {
     position: relative;
 }
 
-/* Scroll indicator */
+/* Scroll indicator - removed text, keeping gradient fade effect */
 .story-text::after {
-    content: '⬇ Scroll for more ⬇';
+    content: '';
     position: absolute;
     bottom: 0;
     left: 0;
@@ -139,8 +139,6 @@ header h1 {
     background: linear-gradient(to top, #1e1e1e 0%, transparent 100%);
     padding: 20px 10px 10px;
     text-align: center;
-    color: #00d2ff;
-    font-size: 0.85em;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease;
