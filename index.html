@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bob's Great Refactoring Quest</title>
+    
+    <!-- Favicon for browsers -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="shortcut icon" href="https://ibm.biz/adventure-bob-icon">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://ibm.biz/adventure-bob-icon">
+    <link rel="apple-touch-icon" href="https://ibm.biz/adventure-bob-icon">
+    
+    <!-- Apple Mobile Web App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bob's Quest">
+    
+    <!-- IBM Plex Mono Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <div class="header-content">
+                <img src="https://ibm.biz/adventure-bob-icon" alt="Adventure Bob" class="bob-icon">
+                <div class="header-text">
+                    <h1>Bob's Great Refactoring Quest</h1>
+                    <p class="subtitle">A Coding Adventure with IBM Bob</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="game-screen">
+            <div id="story-text" class="story-text">
+                <!-- Story content will be displayed here -->
+            </div>
+            
+            <div id="choices" class="choices">
+                <!-- Choice buttons will appear here -->
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div class="stats">
+                <span id="location">Location: Unknown</span>
+                <span id="timer-display">⏱️ Time: 00:00</span>
+                <span id="health-display">Health: 100 | Sanity: 100</span>
+                <span id="inventory">Inventory: Empty</span>
+            </div>
+            <div class="game-controls">
+                <button id="restart-btn" class="restart-btn">🔄 Restart Quest</button>
+                <button id="leaderboard-btn" class="leaderboard-btn">🏆 Leaderboard</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🏆 Speedrun Leaderboard</h2>
+            <p class="leaderboard-subtitle">Fastest Victory Times</p>
+            <div id="leaderboard-list" class="leaderboard-list">
+                <!-- Leaderboard entries will be inserted here -->
+            </div>
+            <button id="clear-leaderboard" class="clear-btn">Clear Leaderboard</button>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
