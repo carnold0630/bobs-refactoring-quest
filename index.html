@@ -38,10 +38,10 @@
     <div class="game-container">
         <header>
             <div class="header-content">
-                <img src="https://ibm.biz/adventure-bob-icon" alt="Adventure Bob" class="bob-icon">
+                <img src="https://ibm.biz/adventure-bob-icon" alt="Bob's Great Refactoring Quest" class="bob-icon">
                 <div class="header-text">
                     <h1>Bob's Great Refactoring Quest</h1>
-                    <p class="subtitle">A Coding Adventure with IBM Bob</p>
+                    <p class="subtitle">A coding adventure with IBM Bob</p>
                 </div>
             </div>
         </header>
@@ -70,16 +70,28 @@
         </div>
     </div>
     
+    <!-- Name Entry Modal -->
+    <div id="name-entry-modal" class="modal">
+        <div class="modal-content">
+            <h2 class="victory-title">🎉 Victory!</h2>
+            <p class="name-entry-subtitle">Enter your gaming name for the leaderboard:</p>
+            <input type="text" id="gaming-name-input" class="gaming-name-input" placeholder="Enter your gaming name" maxlength="30">
+            <div class="modal-buttons">
+                <button id="submit-name-btn" class="submit-btn">Submit</button>
+                <button id="skip-name-btn" class="skip-btn">Skip</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Leaderboard Modal -->
     <div id="leaderboard-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>🏆 Speedrun Leaderboard</h2>
-            <p class="leaderboard-subtitle">Fastest Victory Times</p>
+            <h2>🏆 Victory Leaderboard</h2>
+            <p class="leaderboard-subtitle">Fastest times</p>
             <div id="leaderboard-list" class="leaderboard-list">
                 <!-- Leaderboard entries will be inserted here -->
             </div>
-            <button id="clear-leaderboard" class="clear-btn">Clear Leaderboard</button>
         </div>
     </div>
     

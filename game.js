@@ -22,6 +22,7 @@ class AdventureGame {
         this.startTime = null;
         this.timerInterval = null;
         this.completionTime = null;
+        this.nameSubmitted = false; // Track if name was already submitted this session
         
         this.init();
     }
@@ -67,24 +68,74 @@ class AdventureGame {
     saveToLeaderboard(endingType) {
         if (!this.completionTime) return;
         
-        const playerName = prompt('🎉 Victory! Enter your name for the leaderboard:', 'Anonymous') || 'Anonymous';
+        // If name already submitted this session, just show leaderboard
+        if (this.nameSubmitted) {
+            this.showLeaderboard();
+            return;
+        }
         
-        const entry = {
-            name: playerName,
-            time: this.completionTime,
-            ending: endingType,
-            class: this.gameState.playerClass || 'Unknown',
-            date: new Date().toISOString()
+        // Show custom name entry modal
+        const nameModal = document.getElementById('name-entry-modal');
+        const nameInput = document.getElementById('gaming-name-input');
+        const submitBtn = document.getElementById('submit-name-btn');
+        const skipBtn = document.getElementById('skip-name-btn');
+        
+        nameInput.value = '';
+        nameModal.style.display = 'block';
+        nameInput.focus();
+        
+        // Handle submit
+        const handleSubmit = () => {
+            const playerName = nameInput.value.trim();
+            
+            if (playerName !== '') {
+                const entry = {
+                    name: playerName,
+                    time: this.completionTime,
+                    ending: endingType,
+                    class: this.gameState.playerClass || 'Unknown',
+                    date: new Date().toISOString()
+                };
+                
+                let leaderboard = JSON.parse(localStorage.getItem('bobLeaderboard') || '[]');
+                leaderboard.push(entry);
+                leaderboard.sort((a, b) => a.time - b.time);
+                leaderboard = leaderboard.slice(0, 10); // Keep top 10
+                
+                localStorage.setItem('bobLeaderboard', JSON.stringify(leaderboard));
+            }
+            
+            this.nameSubmitted = true; // Mark as submitted
+            nameModal.style.display = 'none';
+            this.showLeaderboard();
+            cleanup();
         };
         
-        let leaderboard = JSON.parse(localStorage.getItem('bobLeaderboard') || '[]');
-        leaderboard.push(entry);
-        leaderboard.sort((a, b) => a.time - b.time);
-        leaderboard = leaderboard.slice(0, 10); // Keep top 10
+        // Handle skip
+        const handleSkip = () => {
+            this.nameSubmitted = true; // Mark as submitted (skipped)
+            nameModal.style.display = 'none';
+            this.showLeaderboard();
+            cleanup();
+        };
         
-        localStorage.setItem('bobLeaderboard', JSON.stringify(leaderboard));
+        // Handle Enter key
+        const handleKeyPress = (e) => {
+            if (e.key === 'Enter') {
+                handleSubmit();
+            }
+        };
         
-        this.showLeaderboard();
+        // Cleanup function to remove event listeners
+        const cleanup = () => {
+            submitBtn.removeEventListener('click', handleSubmit);
+            skipBtn.removeEventListener('click', handleSkip);
+            nameInput.removeEventListener('keypress', handleKeyPress);
+        };
+        
+        submitBtn.addEventListener('click', handleSubmit);
+        skipBtn.addEventListener('click', handleSkip);
+        nameInput.addEventListener('keypress', handleKeyPress);
     }
     
     showLeaderboard() {
@@ -112,20 +163,12 @@ class AdventureGame {
     setupLeaderboardModal() {
         const modal = document.getElementById('leaderboard-modal');
         const closeBtn = document.querySelector('.close');
-        const clearBtn = document.getElementById('clear-leaderboard');
         
         closeBtn.onclick = () => modal.style.display = 'none';
         
         window.onclick = (event) => {
             if (event.target === modal) {
                 modal.style.display = 'none';
-            }
-        };
-        
-        clearBtn.onclick = () => {
-            if (confirm('Are you sure you want to clear the leaderboard?')) {
-                localStorage.removeItem('bobLeaderboard');
-                this.showLeaderboard();
             }
         };
     }
@@ -149,13 +192,40 @@ class AdventureGame {
                 'victory_team': 'Team Victory'
             };
             const endingType = endingTypes[sceneId] || 'Victory';
+            
+            // Automatically show name entry modal for victory
             setTimeout(() => this.saveToLeaderboard(endingType), 500);
+        }
+        
+        // Check if this is a game over scene (non-victory ending)
+        if (sceneId === 'struggle_ending') {
+            this.stopTimer();
         }
         
         this.displayStory(scene.text);
         this.displayChoices(scene.choices);
         this.updateLocation(scene.location);
         this.updateInventory();
+        
+        // Display time for game over screen
+        if (sceneId === 'struggle_ending') {
+            setTimeout(() => {
+                const timeElement = document.getElementById('game-over-time');
+                if (timeElement && this.completionTime) {
+                    timeElement.innerHTML = `<strong>Your Time: ${this.formatTime(this.completionTime)}</strong>`;
+                }
+            }, 100);
+        }
+        
+        // Display time for victory screen
+        if (sceneId.startsWith('victory_')) {
+            setTimeout(() => {
+                const timeElement = document.getElementById('victory-time');
+                if (timeElement && this.completionTime) {
+                    timeElement.innerHTML = `<strong>Your Time: ${this.formatTime(this.completionTime)}</strong>`;
+                }
+            }, 100);
+        }
     }
     
     displayStory(text) {
@@ -290,6 +360,7 @@ class AdventureGame {
         this.stopTimer();
         this.startTimer();
         this.completionTime = null;
+        this.nameSubmitted = false; // Reset name submission flag
         this.loadScene('start');
     }
     
@@ -804,25 +875,24 @@ class AdventureGame {
         victory_debug: {
             location: "Core System - Victory",
             text: [
+                "<h2 style='font-size: 1.5em; color: #00ff88; text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);'>🎉 VICTORY: Debug Master! 🎉</h2>",
+                "<span id='victory-time'></span>",
                 "You activate Bob's Debug Tool!",
                 "The NullPointer King's code becomes visible.",
                 "You identify the flaw: an uninitialized pointer in the constructor!",
                 "You patch it with a single line of code.",
                 "✨ The King dissolves into properly managed memory!",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"You did it! The system is saved! 😊\"",
-                "🎉 <strong>PERFECT ENDING: Debug Master!</strong>"
+                "You won by using Bob's Debug Tool to identify and fix the NullPointer King's core flaw. Your technical expertise and the right tools led you to victory!"
             ],
-            choices: [
-                {
-                    text: "Start a new adventure",
-                    next: "start"
-                }
-            ]
+            choices: []
         },
         
         victory_duck: {
             location: "Core System - Victory",
             text: [
+                "<h2 style='font-size: 1.5em; color: #00ff88; text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);'>🎉 VICTORY: Rubber Duck Debugging Champion! 🎉</h2>",
+                "<span id='victory-time'></span>",
                 "You pull out the Rubber Duck! 🦆",
                 "You begin explaining the system architecture to it.",
                 "As you talk, the solution becomes clear!",
@@ -830,38 +900,32 @@ class AdventureGame {
                 "You implement proper garbage collection.",
                 "✨ The King is cleaned up by the garbage collector!",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"The duck method never fails! 😊\"",
-                "🎉 <strong>PERFECT ENDING: Rubber Duck Debugging Champion!</strong>"
+                "You won by using the ancient art of Rubber Duck Debugging! By explaining the problem out loud, you discovered the solution yourself."
             ],
-            choices: [
-                {
-                    text: "Start a new adventure",
-                    next: "start"
-                }
-            ]
+            choices: []
         },
         
         victory_brute: {
             location: "Core System - Victory",
             text: [
+                "<h2 style='font-size: 1.5em; color: #00ff88; text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);'>🎉 VICTORY: Brute Force Victor! 🎉</h2>",
+                "<span id='victory-time'></span>",
                 "You're in good shape! Time for a direct approach!",
                 "You brute-force a solution, trying every possible fix.",
                 "It's exhausting, but your high health carries you through!",
                 "Eventually, you find the right combination.",
                 "⚔️ The NullPointer King crashes with a segmentation fault!",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"Not elegant, but effective! 😊\"",
-                "🎉 <strong>GOOD ENDING: Brute Force Victor!</strong>"
+                "You won through sheer determination and high health! Your resilience allowed you to try every solution until you found the right one."
             ],
-            choices: [
-                {
-                    text: "Start a new adventure",
-                    next: "start"
-                }
-            ]
+            choices: []
         },
         
         victory_team: {
             location: "Core System - Victory",
             text: [
+                "<h2 style='font-size: 1.5em; color: #00ff88; text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);'>🎉 VICTORY: Team Victory! 🎉</h2>",
+                "<span id='victory-time'></span>",
                 "You signal the team! Everyone springs into action!",
                 "👩‍💻 <strong>PRIYA:</strong> \"I'll handle the UI layer!\"",
                 "👨‍💻 <strong>MARCO:</strong> \"I've got the backend logic!\"",
@@ -869,33 +933,25 @@ class AdventureGame {
                 "Together, you systematically dismantle the King's code!",
                 "✨ The NullPointer King is refactored into oblivion!",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"THAT'S teamwork! I'm so proud! 😊\"",
-                "🎉 <strong>PERFECT ENDING: Team Victory!</strong>"
+                "You won through the power of teamwork! By coordinating with your team and using everyone's strengths, you achieved a perfect victory."
             ],
-            choices: [
-                {
-                    text: "Start a new adventure",
-                    next: "start"
-                }
-            ]
+            choices: []
         },
         
         struggle_ending: {
             location: "Core System - Struggle",
             text: [
+                "<h1 style='font-size: 2.5em; color: #ff3366; text-align: center; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);'>💀 GAME OVER 💀</h1>",
+                "<span id='game-over-time'></span>",
                 "You fight valiantly, but you're not quite prepared enough.",
                 "The NullPointer King's attacks are relentless.",
                 "System errors cascade. Memory leaks everywhere.",
                 "The system crashes... but not completely.",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"Don't worry! We can try again! 😊\"",
                 "<img src='https://ibm.biz/ibm-bob-app-icon' alt='Bob' class='bob-avatar'> <strong>BOB:</strong> \"Maybe gather more tools next time?\"",
-                "💀 <strong>GAME OVER - Try again with better preparation!</strong>"
+                "You didn't have the right tools or preparation to defeat the NullPointer King. Try collecting items like the Debug Tool, Rubber Duck, or Team Strategy, and maintain your health to unlock victory paths!"
             ],
-            choices: [
-                {
-                    text: "Restart and try a different approach",
-                    next: "start"
-                }
-            ]
+            choices: []
         }
     };
 }

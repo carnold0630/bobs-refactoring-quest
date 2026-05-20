@@ -26,8 +26,9 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     padding: 20px;
+    padding-top: 40px;
     color: #333;
 }
 
@@ -39,6 +40,7 @@ body {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     animation: fadeIn 0.5s ease-in;
+    position: relative;
 }
 
 @keyframes fadeIn {
@@ -71,9 +73,6 @@ header {
 .bob-icon {
     width: 80px;
     height: 80px;
-    border-radius: 50%;
-    border: 3px solid #00ff88;
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
     animation: bobFloat 3s ease-in-out infinite;
 }
 
@@ -91,11 +90,12 @@ header {
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: 2em;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .subtitle {
@@ -121,7 +121,7 @@ header h1 {
     border-radius: 8px;
     line-height: 1.8;
     font-size: 1.05em;
-    max-height: 300px;
+    height: 300px;
     overflow-y: auto;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 136, 0.3);
     font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
@@ -244,6 +244,7 @@ header h1 {
     gap: 8px;
     font-size: 0.95em;
     color: #495057;
+    flex: 1;
 }
 
 .stats span {
@@ -254,6 +255,7 @@ header h1 {
     border-left: 3px solid #00d2ff;
     font-weight: 500;
     font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+    width: 100%;
 }
 
 .restart-btn {
@@ -316,7 +318,7 @@ header h1 {
     .story-text {
         padding: 20px;
         font-size: 1em;
-        max-height: 250px;
+        height: 250px;
         /* Force scrollbar visibility on mobile */
         overflow-y: scroll !important;
         -webkit-overflow-scrolling: touch;
@@ -645,6 +647,123 @@ header h1 {
         width: 95%;
         padding: 20px;
         margin: 10% auto;
+    }
+    
+    /* Gaming Name Entry Modal - Modern Clean Design */
+    #name-entry-modal .modal-content {
+        background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+        border: 3px solid #00ff88;
+        border-radius: 15px;
+        box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        padding: 35px;
+        max-width: 500px;
+    }
+    
+    .victory-title {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+        color: #00ff88;
+        text-align: center;
+        font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+        font-weight: 700;
+        text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+    }
+    
+    .name-entry-subtitle {
+        font-size: 1em;
+        margin-bottom: 25px;
+        color: #00d2ff;
+        text-align: center;
+        font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+        font-weight: 400;
+        opacity: 0.9;
+    }
+    
+    .gaming-name-input {
+        width: 100%;
+        padding: 15px 18px;
+        font-size: 1.05em;
+        border: 2px solid #00ff88;
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.4);
+        color: #00ff88;
+        font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+        font-weight: 400;
+        margin: 0 0 20px 0;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    .gaming-name-input:focus {
+        outline: none;
+        border-color: #00d2ff;
+        color: #00d2ff;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 210, 255, 0.4);
+    }
+    
+    .gaming-name-input::placeholder {
+        color: #555;
+        font-style: normal;
+    }
+    
+    .modal-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 10px;
+    }
+    
+    .submit-btn {
+        flex: 1;
+        background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+        color: white;
+        border: 2px solid #00ff88;
+        padding: 14px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 255, 136, 0.4);
+        background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+        border-color: #00ffff;
+    }
+    
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+    
+    .skip-btn {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.1);
+        color: #d4d4d4;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        padding: 14px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .skip-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .skip-btn:active {
+        transform: translateY(0);
     }
     
     .leaderboard-entry {
