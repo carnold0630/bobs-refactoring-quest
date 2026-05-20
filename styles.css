@@ -127,6 +127,10 @@ header h1 {
     font-family: 'IBM Plex Mono', 'Courier New', 'Consolas', monospace;
     font-weight: 400;
     position: relative;
+    /* Force scrollbar to always show on mobile */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #00ff88 #0a0a0a;
 }
 
 /* Scroll indicator - removed text, keeping gradient fade effect */
@@ -313,25 +317,30 @@ header h1 {
         padding: 20px;
         font-size: 1em;
         max-height: 250px;
+        /* Force scrollbar visibility on mobile */
+        overflow-y: scroll !important;
+        -webkit-overflow-scrolling: touch;
     }
     
-    /* Ensure scrollbar is visible on mobile */
+    /* Force scrollbar to always show on mobile - more aggressive */
     .story-text::-webkit-scrollbar {
-        width: 14px;
+        width: 14px !important;
+        -webkit-appearance: none !important;
     }
     
     .story-text::-webkit-scrollbar-track {
-        background: #0a0a0a;
-        border-radius: 7px;
-        border: 2px solid #00ff88;
-        box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.4);
+        background: #0a0a0a !important;
+        border-radius: 7px !important;
+        border: 2px solid #00ff88 !important;
+        box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.4) !important;
     }
     
     .story-text::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #00d2ff 0%, #00ff88 100%);
-        border-radius: 7px;
-        border: 2px solid #1e1e1e;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.9);
+        background: linear-gradient(180deg, #00d2ff 0%, #00ff88 100%) !important;
+        border-radius: 7px !important;
+        border: 2px solid #1e1e1e !important;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.9) !important;
+        -webkit-appearance: none !important;
     }
     
     .choice-btn {
