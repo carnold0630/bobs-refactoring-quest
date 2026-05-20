@@ -150,9 +150,7 @@ class AdventureGame {
                 <div class="leaderboard-entry ${index < 3 ? 'top-three' : ''}">
                     <span class="rank">${index + 1}</span>
                     <span class="player-name">${entry.name}</span>
-                    <span class="player-class">${entry.class}</span>
                     <span class="completion-time">${this.formatTime(entry.time)}</span>
-                    <span class="ending-type">${entry.ending}</span>
                 </div>
             `).join('');
         }

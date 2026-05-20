@@ -548,8 +548,8 @@ header h1 {
 
 .leaderboard-entry {
     display: grid;
-    grid-template-columns: 50px 1fr 120px 100px 150px;
-    gap: 10px;
+    grid-template-columns: 50px 1fr 100px;
+    gap: 15px;
     padding: 15px;
     margin-bottom: 10px;
     background: rgba(0, 210, 255, 0.1);
@@ -768,18 +768,7 @@ header h1 {
     
     .leaderboard-entry {
         grid-template-columns: 40px 1fr 80px;
-        grid-template-rows: auto auto;
-        gap: 8px;
-    }
-    
-    .player-class {
-        grid-column: 2;
-        text-align: left;
-    }
-    
-    .ending-type {
-        grid-column: 2 / 4;
-        text-align: left;
+        gap: 10px;
     }
     
     .game-controls {
